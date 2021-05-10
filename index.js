@@ -5,6 +5,7 @@ require("dotenv").config();
 const { initialiseDBConnection } = require("./db/db.connect");
 const { categoryRouter } = require("./routes/category.routes");
 const { videoRouter } = require("./routes/video.routes");
+const { playlistRouter } = require("./routes/playlist.routes");
 const {
   pathNotFoundHandler,
   errorHandler,
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/categories", categoryRouter);
 app.use("/api/videos", videoRouter);
+app.use("/api/playlists", playlistRouter);
 
 // error Handler
 app.use(errorHandler);
