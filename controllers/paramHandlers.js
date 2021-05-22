@@ -3,7 +3,7 @@ const { Video } = require("../models/Video.model");
 const { Playlist } = require("../models/Playlist.model");
 const categoryParamHandler = async (req, res, next, categoryId) => {
   try {
-    const category = await Category.findById(categoryId).populate("videos");
+    const category = await Category.findById(categoryId);
     req.category = category;
     next();
   } catch (err) {

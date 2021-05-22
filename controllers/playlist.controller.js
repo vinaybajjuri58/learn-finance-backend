@@ -118,7 +118,7 @@ const removeVideoFromPlaylist = async (req, res) => {
   try {
     playlist.videos.pull(videoId);
     const updatedPlaylist = await playlist.save();
-    res.status(201).json({
+    res.status(204).json({
       success: true,
       message: "removed video from playlist",
       playlist: updatedPlaylist,
