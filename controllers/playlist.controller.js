@@ -62,7 +62,7 @@ const removePlaylist = async (req, res) => {
   try {
     const playlist = req.playlist;
     const deletedPlaylist = await playlist.remove();
-    res.status(200).json({
+    res.status(204).json({
       success: true,
       message: "deleted playlist",
       playlist: deletedPlaylist,
