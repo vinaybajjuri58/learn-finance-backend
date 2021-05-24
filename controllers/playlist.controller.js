@@ -1,8 +1,10 @@
+const mongoose = require("mongoose");
 const { extend } = require("lodash");
 const Playlist = require("../models/Playlist.model");
 const getAllPlaylists = async (req, res) => {
+  const user = req.user;
   try {
-    const allPlaylists = await Playlist.find({}).populate("videos");
+    const allPlaylists = user.playlists;
     res.status(200).json({
       success: true,
       playlists: allPlaylists,
@@ -19,8 +21,14 @@ const getAllPlaylists = async (req, res) => {
 const addAPlaylist = async (req, res) => {
   const playlistData = req.body;
   const newPlaylist = new Playlist({ ...playlistData, videos: [] });
+  let user = req.user;
   try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     const savedPlaylist = await newPlaylist.save();
+    user.playlists.push(savedPlaylist._id);
+    await user.save({ session: session });
+    session.commitTransaction();
     res.status(201).json({
       success: true,
       playlist: savedPlaylist,
@@ -64,12 +72,17 @@ const updatePlaylist = async (req, res) => {
 
 const removePlaylist = async (req, res) => {
   try {
+    const user = req.user;
     const playlist = req.playlist;
-    const deletedPlaylist = await playlist.remove();
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await playlist.remove();
+    user.playlists.pull(playlist._id);
+    await user.save({ session: session });
+    session.commitTransaction();
     res.status(204).json({
       success: true,
       message: "deleted playlist",
-      playlist: deletedPlaylist,
     });
   } catch (err) {
     res.status(400).json({

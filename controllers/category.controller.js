@@ -44,7 +44,7 @@ const updateCategory = async (req, res) => {
   category = extend(category, updateCategory);
   try {
     const updatedCategory = await category.save();
-    res.status(204).json({
+    res.status(201).json({
       success: true,
       message: "Category updated successfully",
       category: updatedCategory,

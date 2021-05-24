@@ -1,5 +1,7 @@
 const Category = require("../models/Category.model");
 const Playlist = require("../models/Playlist.model");
+const User = require("../models/User.model");
+
 const categoryParamHandler = async (req, res, next, categoryId) => {
   try {
     const category = await Category.findById(categoryId);
@@ -39,7 +41,27 @@ const playlistParamHandler = async (req, res, next, playlistId) => {
     });
   }
 };
+
+const userParamHandler = async (req, res, next, userId) => {
+  try {
+    const userData = await User.findById(userId);
+    if (!userData) {
+      return res.status(400).json({
+        success: false,
+        message: "User doesnt exists",
+      });
+    }
+    req.user = userData;
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: "Error while getting user data",
+      errMessage: err.errMessage,
+    });
+  }
+};
 module.exports = {
   categoryParamHandler,
   playlistParamHandler,
+  userParamHandler,
 };

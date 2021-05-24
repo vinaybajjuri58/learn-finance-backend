@@ -6,6 +6,8 @@ const { initialiseDBConnection } = require("./db/db.connect");
 const { categoryRouter } = require("./routes/category.routes");
 const { videoRouter } = require("./routes/video.routes");
 const { playlistRouter } = require("./routes/playlist.routes");
+const { authValidator } = require("./middleware/authHandlers");
+const { userRouter } = require("./routes/user.routes");
 const {
   pathNotFoundHandler,
   errorHandler,
@@ -19,8 +21,10 @@ app.get("/", (req, res) => {
     message: "Welcome to the backend of learn-finance app.",
   });
 });
+app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/videos", videoRouter);
+app.use(authValidator);
 app.use("/api/playlists", playlistRouter);
 
 // error Handler
