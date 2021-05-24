@@ -1,9 +1,14 @@
-const { Category } = require("../models/Category.model");
-const { Video } = require("../models/Video.model");
-const { Playlist } = require("../models/Playlist.model");
+const Category = require("../models/Category.model");
+const Playlist = require("../models/Playlist.model");
 const categoryParamHandler = async (req, res, next, categoryId) => {
   try {
     const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Category doesnt exits",
+      });
+    }
     req.category = category;
     next();
   } catch (err) {
@@ -14,10 +19,11 @@ const categoryParamHandler = async (req, res, next, categoryId) => {
     });
   }
 };
+
 const playlistParamHandler = async (req, res, next, playlistId) => {
   try {
     const playlistData = await Playlist.findById(playlistId);
-    if (playlistData === null) {
+    if (!playlistData) {
       return res.status(400).json({
         success: false,
         message: "Playlist doesnt exits",

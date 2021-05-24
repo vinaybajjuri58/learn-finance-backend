@@ -12,6 +12,7 @@ const {
 } = require("./middleware/errorHandlers");
 app.use(cors());
 app.use(express.json());
+initialiseDBConnection();
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -27,7 +28,6 @@ app.use(errorHandler);
 
 // Do not move pathnotfound handler
 app.use(pathNotFoundHandler);
-initialiseDBConnection();
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);

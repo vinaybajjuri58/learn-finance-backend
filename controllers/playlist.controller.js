@@ -1,5 +1,5 @@
 const { extend } = require("lodash");
-const { Playlist } = require("../models/Playlist.model");
+const Playlist = require("../models/Playlist.model");
 const getAllPlaylists = async (req, res) => {
   try {
     const allPlaylists = await Playlist.find({}).populate("videos");
@@ -15,6 +15,7 @@ const getAllPlaylists = async (req, res) => {
     });
   }
 };
+
 const addAPlaylist = async (req, res) => {
   const playlistData = req.body;
   const newPlaylist = new Playlist({ ...playlistData, videos: [] });
@@ -32,6 +33,7 @@ const addAPlaylist = async (req, res) => {
     });
   }
 };
+
 const getPlaylistDetails = (req, res) => {
   const playlist = req.playlist;
   res.status(200).json({
@@ -39,6 +41,7 @@ const getPlaylistDetails = (req, res) => {
     playlist,
   });
 };
+
 const updatePlaylist = async (req, res) => {
   const updatePlaylistDetails = req.body;
   let playlist = req.playlist;
@@ -58,6 +61,7 @@ const updatePlaylist = async (req, res) => {
     });
   }
 };
+
 const removePlaylist = async (req, res) => {
   try {
     const playlist = req.playlist;
@@ -75,12 +79,13 @@ const removePlaylist = async (req, res) => {
     });
   }
 };
+
 const getPlaylistVideos = async (req, res) => {
   const playlistId = req.playlist._id;
   try {
     const playlistVideosData = await Playlist.findById(playlistId)
       .populate("videos")
-      .select("__v");
+      .select("-__v");
     res.status(200).json({
       success: true,
       videos: playlistVideosData.videos,
@@ -93,8 +98,9 @@ const getPlaylistVideos = async (req, res) => {
     });
   }
 };
+
 const addVideoToPlaylist = async (req, res) => {
-  const videoId = req.body.video;
+  const videoId = req.body.videoId;
   let playlist = req.playlist;
   try {
     playlist.videos.push(videoId);
@@ -112,6 +118,7 @@ const addVideoToPlaylist = async (req, res) => {
     });
   }
 };
+
 const removeVideoFromPlaylist = async (req, res) => {
   const videoId = req.params.videoId;
   let playlist = req.playlist;

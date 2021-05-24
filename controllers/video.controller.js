@@ -1,4 +1,4 @@
-const { Video } = require("../models/Video.model");
+const Video = require("../models/Video.model");
 const getAllVideos = async (req, res) => {
   try {
     const videos = await Video.find({});
@@ -8,7 +8,7 @@ const getAllVideos = async (req, res) => {
       videos,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: "Error in getting video details",
       errMessage: err.errMessage,

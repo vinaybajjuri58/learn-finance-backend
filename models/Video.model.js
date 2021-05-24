@@ -27,5 +27,4 @@ const videoSchema = new Schema({
     ref: "Category",
   },
 });
-const Video = mongoose.model("Video", videoSchema);
-module.exports = { Video };
+module.exports = mongoose.model("Video", videoSchema);

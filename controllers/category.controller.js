@@ -1,7 +1,7 @@
 const { extend } = require("lodash");
 const mongoose = require("mongoose");
-const { Category } = require("../models/Category.model");
-const { Video } = require("../models/Video.model");
+const Category = require("../models/Category.model");
+const Video = require("../models/Video.model");
 const getAllCategories = async (req, res) => {
   try {
     const allCategories = await Category.find({});
@@ -18,12 +18,12 @@ const getAllCategories = async (req, res) => {
     });
   }
 };
+
 const addACategory = async (req, res) => {
   const categoryDetails = req.body;
   const newCategory = new Category(categoryDetails);
-  let savedCategory;
   try {
-    savedCategory = await newCategory.save();
+    const savedCategory = await newCategory.save();
     res.status(201).json({
       success: true,
       message: "Added new category",
@@ -37,6 +37,7 @@ const addACategory = async (req, res) => {
     });
   }
 };
+
 const updateCategory = async (req, res) => {
   let category = req.category;
   const updateCategory = req.body;
@@ -56,6 +57,7 @@ const updateCategory = async (req, res) => {
     });
   }
 };
+
 const getACategory = async (req, res) => {
   res.status(200).json({
     success: true,
@@ -63,24 +65,25 @@ const getACategory = async (req, res) => {
     category: req.category,
   });
 };
+
 const addAVideo = async (req, res) => {
   const category = req.category;
   const videoDetails = { ...req.body, category: category._id };
   const newVideo = new Video(videoDetails);
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    const savedVideo = await newVideo.save({ session: sess });
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    const savedVideo = await newVideo.save({ session: session });
     category.videos.push(savedVideo._id);
-    await category.save({ session: sess });
-    sess.commitTransaction();
+    await category.save({ session: session });
+    session.commitTransaction();
     res.status(201).json({
       success: true,
       message: "Added a video",
       video: savedVideo,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: "Error in adding a video",
       errMessage: err.errMessage,
