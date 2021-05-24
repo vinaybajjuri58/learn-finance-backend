@@ -8,6 +8,8 @@ const { videoRouter } = require("./routes/video.routes");
 const { playlistRouter } = require("./routes/playlist.routes");
 const { authValidator } = require("./middleware/authHandlers");
 const { userRouter } = require("./routes/user.routes");
+const { likesRouter } = require("./routes/liked.routes");
+const { historyRouter } = require("./routes/history.routes");
 const {
   pathNotFoundHandler,
   errorHandler,
@@ -26,6 +28,8 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/videos", videoRouter);
 app.use(authValidator);
 app.use("/api/playlists", playlistRouter);
+app.use("/api/videos", likesRouter);
+app.use("/api/videos", historyRouter);
 
 // error Handler
 app.use(errorHandler);

@@ -33,12 +33,12 @@ const removeFromLiked = async (req, res) => {
     await user.save();
     res.status(201).json({
       success: true,
-      message: "Added to likedvideos",
+      message: "removed from likedvideos",
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "error in adding video to liked videos",
+      message: "error in removing video from liked videos",
       errMessage: err.errMessage,
     });
   }

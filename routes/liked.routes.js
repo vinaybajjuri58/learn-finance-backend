@@ -6,7 +6,7 @@ const {
   removeFromLiked,
 } = require("../controllers/liked.controller");
 likesRouter
-  .route("/likes")
+  .route("/liked")
   .get(getLikedVideos)
   .post(addLikedVideo)
   .delete(removeFromLiked);
