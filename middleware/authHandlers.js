@@ -16,7 +16,7 @@ const authValidator = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    return res.json(400).json({
+    return res.status(400).json({
       success: false,
       message: "Invalid Token",
       errMessage: err.errMessage,

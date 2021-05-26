@@ -63,9 +63,9 @@ const userLogin = async (req, res) => {
     });
   }
 };
-const getUserData = async (req, res) => {
+const getUserData = (req, res) => {
   const user = req.user;
-  return res.status(200).json({
+  res.status(200).json({
     success: true,
     user,
   });
