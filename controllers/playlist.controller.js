@@ -71,16 +71,16 @@ const updatePlaylist = async (req, res) => {
 };
 
 const removePlaylist = async (req, res) => {
+  const user = req.user;
+  const playlist = req.playlist;
   try {
-    const user = req.user;
-    const playlist = req.playlist;
     const session = await mongoose.startSession();
     session.startTransaction();
-    await playlist.remove();
+    await playlist.remove({ session: session });
     user.playlists.pull(playlist._id);
     await user.save({ session: session });
     session.commitTransaction();
-    res.status(204).json({
+    return res.status(204).json({
       success: true,
       message: "deleted playlist",
     });
