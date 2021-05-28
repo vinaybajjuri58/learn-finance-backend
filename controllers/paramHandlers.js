@@ -60,6 +60,7 @@ const userParamHandler = async (req, res, next, userId) => {
     });
   }
 };
+
 module.exports = {
   categoryParamHandler,
   playlistParamHandler,
